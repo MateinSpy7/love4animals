@@ -67,3 +67,6 @@ C:\Users\quint\love4animals\love4animals\obj\Debug\net10.0\refint\love4animals.d
 C:\Users\quint\love4animals\love4animals\obj\Debug\net10.0\love4animals.pdb
 C:\Users\quint\love4animals\love4animals\obj\Debug\net10.0\love4animals.genruntimeconfig.cache
 C:\Users\quint\love4animals\love4animals\obj\Debug\net10.0\ref\love4animals.dll
+C:\Users\quint\love4animals\love4animals\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\quint\love4animals\love4animals\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\quint\love4animals\love4animals\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll

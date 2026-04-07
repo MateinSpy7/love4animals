@@ -5,40 +5,34 @@ using love4animals.DTOs;
 namespace love4animals.Controllers;
 
 [ApiController]
-[Route("v1/posts")] // Ruta correcta para los posts
-public class PostController : ControllerBase
+[Route("v1/posts/{postId}/comments")] 
+public class CommentController : ControllerBase
 {
-    private readonly IPostService _svc;
+    private readonly ICommentService _svc;
 
-    public PostController(IPostService svc) => _svc = svc;
+    public CommentController(ICommentService svc) => _svc = svc;
 
     [HttpGet]
-    public ActionResult<IEnumerable<GetPostDto>> GetAll() => Ok(_svc.GetAll());
-
-    [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)] // Respuesta exitosa
     [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
-    public ActionResult<GetPostDto> GetById(Guid id)
-    {
-        var post = _svc.GetById(id);
-        return post == null ? NotFound() : Ok(post);
-    }
+
+    public ActionResult<IEnumerable<GetCommentDto>> GetAll(Guid postId) 
+        => Ok(_svc.GetAllByPostId(postId)); // Tu servicio deberá filtrar por postId
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)] // Respuesta cuando se crea un recurso
-    [ProducesResponseType(StatusCodes.Status400BadRequest)] // Respuesta si los datos son inválidos
-
-    public ActionResult<GetPostDto> Create([FromBody] CreatePostDto dto)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)] // Respuesta si los datos son
+    public ActionResult<GetCommentDto> Create(Guid postId, [FromBody] CreateCommentDto dto)
     {
-        var created = _svc.Create(dto);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        var created = _svc.Create(postId, dto); // Pásale el postId al servicio
+        return CreatedAtAction(nameof(GetAll), new { postId = postId }, created);
     }
-
+    
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se actualiza correctamente
     [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
 
-    public ActionResult Update(Guid id, [FromBody] UpdatePostDto dto)
+    public ActionResult Update(Guid postId, Guid id, [FromBody] UpdateCommentDto dto)
     {
         var updated = _svc.Update(id, dto);
         return updated ? NoContent() : NotFound();
@@ -47,10 +41,10 @@ public class PostController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se elimina correctamente
     [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
-
-    public ActionResult Delete(Guid id)
+    public ActionResult Delete(Guid postId, Guid id)
     {
         var deleted = _svc.Delete(id);
         return deleted ? NoContent() : NotFound();
     }
+    
 }

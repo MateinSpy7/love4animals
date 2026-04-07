@@ -16,6 +16,8 @@ public class CampaignController : ControllerBase
     public ActionResult<IEnumerable<GetCampaignDto>> GetAll() => Ok(_svc.GetAll());
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)] // Respuesta exitosa
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
     public ActionResult<GetCampaignDto> GetById(Guid id)
     {
         var campaign = _svc.GetById(id);
@@ -23,6 +25,9 @@ public class CampaignController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)] // Respuesta cuando se crea un recurso
+    [ProducesResponseType(StatusCodes.Status400BadRequest)] // Respuesta si los datos son inválidos
+
     public ActionResult<GetCampaignDto> Create([FromBody] CreateCampaignDto dto)
     {
         var created = _svc.Create(dto);
@@ -30,6 +35,9 @@ public class CampaignController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se actualiza correctamente
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
+
     public ActionResult Update(Guid id, [FromBody] UpdateCampaignDto dto)
     {
         var updated = _svc.Update(id, dto);
@@ -37,6 +45,9 @@ public class CampaignController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se elimina correctamente
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
+
     public ActionResult Delete(Guid id)
     {
         var deleted = _svc.Delete(id);

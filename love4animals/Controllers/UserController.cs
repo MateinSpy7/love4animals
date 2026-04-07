@@ -16,6 +16,8 @@ public class UserController : ControllerBase
     public ActionResult<IEnumerable<GetUserDto>> GetAll() => Ok(_svc.GetAll());
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)] // Respuesta exitosa
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
     public ActionResult<GetUserDto> GetById(Guid id)
     {
         var user = _svc.GetById(id);
@@ -23,6 +25,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)] // Respuesta cuando se crea un recurso
+    [ProducesResponseType(StatusCodes.Status400BadRequest)] // Respuesta si los datos son inválidos
+
     public ActionResult<GetUserDto> Create([FromBody] CreateUserDto dto)
     {
         var created = _svc.Create(dto);
@@ -30,6 +35,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se actualiza correctamente
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
+
     public ActionResult Update(Guid id, [FromBody] UpdateUserDto dto)
     {
         var updated = _svc.Update(id, dto);
@@ -37,6 +45,8 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se elimina correctamente
+    [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
     public ActionResult Delete(Guid id)
     {
         var deleted = _svc.Delete(id);
