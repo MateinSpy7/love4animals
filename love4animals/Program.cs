@@ -13,6 +13,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddSingleton<ICampaignRepository, CampaignRepository>();
 builder.Services.AddScoped<ICampaignService, CampaignService>();
+
+builder.Services.AddSingleton<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostService, PostService>();
 var app = builder.Build();
 
 app.MapControllers();
