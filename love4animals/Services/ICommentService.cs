@@ -10,6 +10,8 @@ public interface ICommentService
     
     //Recibe el postId de la URL y los datos del body (dto)
     GetCommentDto Create(Guid postId, CreateCommentDto dto);
-    bool Update(Guid id, UpdateCommentDto dto);
+    
+    //bool Update(Guid id, UpdateCommentDto dto);
+    GetCommentDto? Update(Guid id, UpdateCommentDto dto);
     bool Delete(Guid id);
 }

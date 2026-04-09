@@ -22,6 +22,9 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 
+builder.Services.AddSingleton<IDonationRepository, DonationRepository>();
+builder.Services.AddScoped<IDonationService, DonationService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

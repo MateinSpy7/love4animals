@@ -28,7 +28,7 @@ public class CommentController : ControllerBase
         return CreatedAtAction(nameof(GetAll), new { postId = postId }, created);
     }
     
-    [HttpPut("{id}")]
+    /*[HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se actualiza correctamente
     [ProducesResponseType(StatusCodes.Status404NotFound)] // Respuesta si no existe
 
@@ -37,6 +37,18 @@ public class CommentController : ControllerBase
         var updated = _svc.Update(id, dto);
         return updated ? NoContent() : NotFound();
     }
+*/
+
+[HttpPut("{id}")]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status404NotFound)]
+public ActionResult<GetCommentDto> Update(Guid postId, Guid id, [FromBody] UpdateCommentDto dto)
+{
+    var updated = _svc.Update(id, dto);
+    // Si updated no es null, devolvemos 200 OK con los datos. Si es null, 404.
+    return updated != null ? Ok(updated) : NotFound();
+}
+
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)] // Respuesta si se elimina correctamente

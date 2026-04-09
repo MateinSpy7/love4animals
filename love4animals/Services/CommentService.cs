@@ -33,7 +33,7 @@ public class CommentService : ICommentService
         return new GetCommentDto(comment.Id, comment.Text, comment.CreatedAt, comment.PostId, comment.UserId);
     }
 
-    public bool Update(Guid id, UpdateCommentDto dto)
+    /*public bool Update(Guid id, UpdateCommentDto dto)
     {
         var existing = _repo.GetById(id);
         if (existing == null) return false;
@@ -41,7 +41,18 @@ public class CommentService : ICommentService
         existing.Text = dto.Text;
         _repo.Update(existing);
         return true;
-    }
+    }*/
+    public GetCommentDto? Update(Guid id, UpdateCommentDto dto)
+{
+    var existing = _repo.GetById(id);
+    if (existing == null) return null;
+
+    existing.Text = dto.Text;
+    _repo.Update(existing);
+    
+    // Devolvemos el objeto actualizado convertido en DTO
+    return new GetCommentDto(existing.Id, existing.Text, existing.CreatedAt, existing.PostId, existing.UserId);
+}
 
     public bool Delete(Guid id)
     {

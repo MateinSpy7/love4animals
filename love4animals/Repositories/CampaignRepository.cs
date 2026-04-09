@@ -18,6 +18,7 @@ public class CampaignRepository : ICampaignRepository
             existing.Title = campaign.Title;
             existing.Description = campaign.Description;
             existing.GoalAmount = campaign.GoalAmount;
+            existing.CurrentAmount = campaign.CurrentAmount;
         }
     }
 
