@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using love4animals.Repositories;
 using love4animals.Services;
 
@@ -31,6 +32,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+   app.MapScalarApiReference(options =>
+    {
+        options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json");
+    });
 }
 
 app.MapControllers();

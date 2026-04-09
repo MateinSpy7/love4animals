@@ -7,9 +7,8 @@ public class Post
     public string ImageUrl { get; set; } = string.Empty;
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     
-    // Relaciones
-    //el que publica el post es el misionero, por eso se llama missionaryId
-    //a que campaña pertenece el post, por eso se llama campaignId
+    //publica un misionero, por eso se llama missionaryId
+    //un post puede pertenecer a una campana ampaignId
 
     public Guid MissionaryId { get; set; } 
     public Guid? CampaignId { get; set; } // El "?" es que no todos los post tienen que pertenecer a una cpaña necesariamente

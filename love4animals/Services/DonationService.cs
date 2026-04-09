@@ -7,9 +7,9 @@ namespace love4animals.Services;
 public class DonationService : IDonationService
 {
     private readonly IDonationRepository _repo;
-    private readonly ICampaignRepository _campaignRepo; //para actualizar los fondos
+    private readonly ICampaignRepository _campaignRepo;
 
-    // Inyectamos ambos repositorios, el de donaciones y el de campañas
+    //donaciones y campañas
     public DonationService(IDonationRepository repo, ICampaignRepository campaignRepo)
     {
         _repo = repo;
@@ -36,7 +36,7 @@ public class DonationService : IDonationService
         };
         _repo.Add(donation);
 
-        // LÓGICA DE NEGOCIO: Si donaron a una campaña, actualizamos el total recaudado
+        
         if (dto.CampaignId.HasValue)
         {
             var campaign = _campaignRepo.GetById(dto.CampaignId.Value);
