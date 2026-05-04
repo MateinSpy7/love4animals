@@ -1,28 +1,50 @@
 using love4animals.Models;
+using Microsoft.EntityFrameworkCore;
+using love4animals.Data;
 
 namespace love4animals.Repositories;
 
 public class CommentRepository : ICommentRepository
 {
-    private readonly List<Comment> _data = new();
+    private readonly Love4AnimalsDbContext _context;
 
-    //coincidencia de posid con el postId del comentario
+    public CommentRepository(Love4AnimalsDbContext context)
+    {
+        _context = context;
+    }
+    public IEnumerable<Comment> GetByPostId(Guid postId)
+    {
+        return _context.Comments.Where(c => c.PostId == postId).ToList();
+    }
 
-    public IEnumerable<Comment> GetByPostId(Guid postId) => _data.Where(c => c.PostId == postId);
+    public Comment? GetById(Guid id)
+    {
+        return _context.Comments.FirstOrDefault(c => c.Id == id);
+    }
 
-    public Comment? GetById(Guid id) => _data.FirstOrDefault(c => c.Id == id);
-
-    public void Add(Comment comment) => _data.Add(comment);
+    public void Add(Comment comment)
+    {
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+    }
 
     public void Update(Comment comment)
     {
         var existing = GetById(comment.Id);
         if (existing != null)
         {
-            // Solo puede cam,biar el texto del comentrio
-            existing.Text = comment.Text; 
+            _context.Comments.Update(comment);
+            _context.SaveChanges();
         }
     }
 
-    public void Delete(Guid id) => _data.RemoveAll(c => c.Id == id);
+    public void Delete(Guid id)
+    {
+        var comment = GetById(id);
+        if (comment != null)
+        {
+            _context.Comments.Remove(comment);
+            _context.SaveChanges(); 
+    }
+}
 }

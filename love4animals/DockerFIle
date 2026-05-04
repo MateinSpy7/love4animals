@@ -1,0 +1,23 @@
+# Etapa 1: Construcción (Build)
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Copiamos el archivo de configuración y restauramos dependencias
+COPY ["love4animals.csproj", "./"]
+RUN dotnet restore
+
+# Copiamos todo el resto del código
+COPY . .
+
+# Compilamos el proyecto en modo Release
+RUN dotnet publish "love4animals.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Etapa 2: Ejecución (Runtime)
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+
+# Traemos solo los archivos compilados de la Etapa 1
+COPY --from=build /app/publish .
+
+# El comando que arranca la aplicación
+ENTRYPOINT ["dotnet", "love4animals.dll"]
