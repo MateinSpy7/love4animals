@@ -1,17 +1,42 @@
 using love4animals.DTOs;
 using love4animals.Repositories;
 using love4animals.Models;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 
 namespace love4animals.Services;
 
 public class PostService : IPostService
 {
     private readonly IPostRepository _repo;
+    private readonly IDistributedCache _cache; //Redis
 
-    public PostService(IPostRepository repo) => _repo = repo;
+    public PostService(IPostRepository repo, IDistributedCache cache)
+    {
+        _repo = repo;
+        _cache = cache;
+    }
 
-    public IEnumerable<GetPostDto> GetAll() => 
-        _repo.GetAll().Select(p => new GetPostDto(p.Id, p.Content, p.ImageUrl, p.CreatedAt, p.MissionaryId, p.CampaignId));
+    public IEnumerable<GetPostDto> GetAll()
+    {
+        // CACHE-ASIDE
+        string cacheKey = "posts:all";
+        var cachedData = _cache.GetString(cacheKey);
+
+        if (cachedData != null)
+        {
+            return JsonSerializer.Deserialize<List<GetPostDto>>(cachedData)!;
+        }
+
+        var posts = _repo.GetAll().Select(p => new GetPostDto(p.Id, p.Content, p.ImageUrl, p.CreatedAt, p.MissionaryId, p.CampaignId)).ToList();
+        
+        _cache.SetString(cacheKey, JsonSerializer.Serialize(posts), new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+        });
+
+        return posts;
+    }
 
     public GetPostDto? GetById(Guid id)
     {
@@ -29,6 +54,9 @@ public class PostService : IPostService
             CampaignId = dto.CampaignId 
         };
         _repo.Add(post);
+        
+        _cache.Remove("posts:all"); // INVALIDACIÓN
+
         return new GetPostDto(post.Id, post.Content, post.ImageUrl, post.CreatedAt, post.MissionaryId, post.CampaignId);
     }
 
@@ -41,6 +69,9 @@ public class PostService : IPostService
         existing.ImageUrl = dto.ImageUrl;
         existing.CampaignId = dto.CampaignId;
         _repo.Update(existing);
+        
+        _cache.Remove("posts:all"); // INVALIDACIÓN
+
         return true;
     }
 
@@ -48,6 +79,9 @@ public class PostService : IPostService
     {
         if (_repo.GetById(id) == null) return false;
         _repo.Delete(id);
+        
+        _cache.Remove("posts:all"); // INVALIDACIÓN
+
         return true;
     }
 }

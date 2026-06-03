@@ -24,7 +24,7 @@ public class CommentService : ICommentService
         var comment = new Comment
         {
             Text = dto.Text,
-            PostId = postId, //asignakos al post que corresponde
+            PostId = postId, 
             UserId = dto.UserId
         };
         

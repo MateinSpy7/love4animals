@@ -16,7 +16,7 @@ public class DonationRepository : IDonationRepository
 
     public IEnumerable<Donation> GetAll() 
     {
-        // Esto que hiciste está excelente. Los Includes traen la data relacionada.
+       
         return _context.Donations
             .Include(d => d.Donor)
             .Include(d => d.Campaign)
@@ -26,7 +26,6 @@ public class DonationRepository : IDonationRepository
 
     public Donation? GetById(Guid id) 
     {
-        // 2. CAMBIO: Reemplazamos '_data' por '_context.Donations'
         return _context.Donations
             .Include(d => d.Donor) // Agregué el include por si necesitas ver el donante
             .FirstOrDefault(d => d.Id == id);
@@ -34,21 +33,21 @@ public class DonationRepository : IDonationRepository
 
     public void Add(Donation donation) 
     {
-        // 3. CAMBIO: Agregar y ejecutar SaveChanges()
+       
         _context.Donations.Add(donation);
         _context.SaveChanges(); 
     }
     
     public void Update(Donation donation)
     {
-        // Con EF Core, el método Update se encarga de todo el rastreo
+       
         _context.Donations.Update(donation);
         _context.SaveChanges();
     }
     
     public void Delete(Guid id) 
     {
-        // Buscamos la donación en la BD real y la eliminamos
+      
         var existing = GetById(id);
         if (existing != null) 
         {

@@ -8,8 +8,10 @@ public class Campaign
     public decimal GoalAmount { get; set; }
     public decimal CurrentAmount { get; set; } = 0;
 
-    public ICollection<Post> Posts { get; set; } = new List<Post>(); // Una campaña puede tener muchos posts
-    public ICollection<Donation> Donations { get; set; } = new List<Donation>(); // Una campaña puede tener muchas donaciones   
-    public User Creator { get; set; } = null!; // Una campaña tiene un creador, es decir un usuario que la creó
+    public Guid CreatorId { get; set; } 
+public User Creator { get; set; } = null!; 
+    public ICollection<Post> Posts { get; set; } = new List<Post>(); 
+    public ICollection<Donation> Donations { get; set; } = new List<Donation>();   
+   
 
 }

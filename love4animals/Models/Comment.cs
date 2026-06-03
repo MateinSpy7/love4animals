@@ -8,10 +8,10 @@ public class Comment
     
     // Relaciones
     public Guid PostId { get; set; } 
-    public Guid UserId { get; set; } // Quien hizo el comentario
-    public Post Post { get; set; } = null!; // Un comentario pertenece a un post
+    public Guid UserId { get; set; } 
+    public Post Post { get; set; } = null!; 
 
-    public User User { get; set; } = null!; // Un comentario tiene un usuario que lo hizo
+    public User User { get; set; } = null!; 
 
     
 }

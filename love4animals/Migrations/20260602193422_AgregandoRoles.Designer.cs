@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using love4animals.Data;
@@ -11,9 +12,11 @@ using love4animals.Data;
 namespace love4animals.Migrations
 {
     [DbContext(typeof(Love4AnimalsDbContext))]
-    partial class Love4AnimalsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602193422_AgregandoRoles")]
+    partial class AgregandoRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

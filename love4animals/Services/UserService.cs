@@ -1,6 +1,7 @@
 using love4animals.DTOs;
 using love4animals.Repositories;
 using love4animals.Models;
+using System;
 
 namespace love4animals.Services;
 
@@ -23,7 +24,20 @@ public class UserService : IUserService
 
     public GetUserDto Create(CreateUserDto dto)
     {
-        var user = new User { Name = dto.Name, Email = dto.Email };
+        //Validamos que no llegue vacía
+        if (string.IsNullOrWhiteSpace(dto.Password))
+        {
+            throw new ArgumentException("La contraseña es obligatoria.");
+        }
+
+        //se crea usuario con hash contraseña
+        var user = new User 
+        { 
+            Name = dto.Name, 
+            Email = dto.Email,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password, workFactor: 12)
+        };
+
         _repo.Add(user);
         return new GetUserDto(user.Id, user.Name, user.Email);
     }

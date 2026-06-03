@@ -7,14 +7,11 @@ public class Post
     public string ImageUrl { get; set; } = string.Empty;
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     
-    //publica un misionero, por eso se llama missionaryId
-    //un post puede pertenecer a una campana ampaignId
-
+   
     public Guid MissionaryId { get; set; } 
-    public Guid? CampaignId { get; set; } // El "?" es que no todos los post tienen que pertenecer a una cpaña necesariamente
+    public Guid? CampaignId { get; set; } 
 
-    public ICollection<Comment> Comments { get; set; } = new List<Comment>(); // Un post puede tener muchos comentarios
-    public User Missionary { get; set; } = null!; // Un post tiene un misionero, es decir un usuario que lo publicó
-    public Campaign? Campaign { get; set; } // Un post puede pertenecer a una campaña, pero no es obligatorio
-     
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>(); 
+    public User Missionary { get; set; } = null!; 
+    public Campaign? Campaign { get; set; } 
 }

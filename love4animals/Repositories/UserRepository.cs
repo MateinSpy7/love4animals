@@ -49,4 +49,9 @@ public class UserRepository : IUserRepository
             _context.SaveChanges();
         }
     }
+
+    public User? GetByEmail(string email)
+    {
+        return _context.Users.FirstOrDefault(u => u.Email == email);
+    }   
 }

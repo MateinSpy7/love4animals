@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using love4animals.Services;
 using love4animals.DTOs;
+using Microsoft.AspNetCore.Authorization; 
 
 namespace love4animals.Controllers;
 
 [ApiController]
 [Route("v1/donations")] 
+[Authorize] 
 public class DonationController : ControllerBase
 {
     private readonly IDonationService _svc;
